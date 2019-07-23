@@ -2,9 +2,13 @@ package com.example.kotlin_todolist.model
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.kotlin_todolist.database.AppDataBase
 import com.example.kotlin_todolist.database.Todo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TodoListViewModel(application: Application) : AndroidViewModel(application){
 
@@ -12,19 +16,29 @@ class TodoListViewModel(application: Application) : AndroidViewModel(application
         Room.databaseBuilder(
             application,
             AppDataBase::class.java, "todoList"
-        ).allowMainThreadQueries()
-            .build()
+        ).build()
+    }
+
+    fun getAll(): LiveData<List<Todo>> {
+        return db.todoDao().getAll()
     }
 
     fun insert(todo: Todo){
-        db.todoDao().insert(todo)
+        //background -> dispatchers.io
+        CoroutineScope(Dispatchers.IO).launch {
+            db.todoDao().insert(todo)
+        }
     }
 
     fun update(todo: Todo){
-        db.todoDao().update(todo)
+        CoroutineScope(Dispatchers.IO).launch {
+            db.todoDao().update(todo)
+        }
     }
 
     fun delete(todo: Todo){
-        db.todoDao().delete(todo)
+        CoroutineScope(Dispatchers.IO).launch {
+            db.todoDao().delete(todo)
+        }
     }
 }

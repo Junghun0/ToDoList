@@ -13,10 +13,22 @@
         <action
             android:id="@+id/action_mainFragment_to_editFragment"
             app:destination="@id/editFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addFragment2"
+            app:destination="@id/addFragment" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.kotlin_todolist.ui.EditFragment"
-        android:label="등록"
-        tools:layout="@layout/fragment_edit" />
+        android:label="수정"
+        tools:layout="@layout/fragment_edit">
+        <argument
+            android:name="todo"
+            app:argType="com.example.kotlin_todolist.database.Todo" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.kotlin_todolist.ui.AddFragment"
+        android:label="추가"
+        tools:layout="@layout/fragment_add" />
 </navigation>
